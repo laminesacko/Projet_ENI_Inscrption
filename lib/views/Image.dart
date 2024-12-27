@@ -17,14 +17,15 @@ class _MyImageState extends State<MyImage> {
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
-              body: CircularProgressIndicator(),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           return Scaffold(
               drawer: Drawer(),
               appBar: AppBar(),
               body: ListView(
-
                 children: [
                   for (int index = 0; index < myList.length; index++)
                     Hero(
@@ -32,11 +33,7 @@ class _MyImageState extends State<MyImage> {
                       child: Material(
                         child: InkWell(
                           onTap: () async {
-                            Navigat_Detail(
-                                context: context,
-                                source: myList[index].address,
-                                name: myList[index].name,
-                                index: index);
+                            Navigate_Detail(context: context, index: index);
                           },
                           child: Stack(
                             children: [
@@ -46,12 +43,28 @@ class _MyImageState extends State<MyImage> {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              Text(
-                                "${myList[index].name}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "${myList[index].name}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 20),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: IconButton(
+                                        color: Colors.red,
+                                          onPressed: () {
+                                           setState(() {
+                                             myList.removeAt(index);
+                                           });
+                                          },
+                                          icon: Icon(
+                                              Icons.delete_forever)))
+                                ],
                               )
                             ],
                           ),
